@@ -138,12 +138,24 @@ UPDATE t1 SET column2 = (SELECT MAX(column1) FROM t1);
   ```
 ---
 ### 📝 Solvesql - 많이 주문한 테이블[🔗](https://solvesql.com/problems/find-tables-with-high-bill/)
-![image](../5tb/SQL/Week0/1.png)
+```sql
+SELECT
+  *
+FROM tips
+WHERE total_bill > (SELECT AVG(total_bill) FROM tips)
+```
+![image](../SQL/image/Week0/1.png)
 
-y-e-yeon/5tb/SQL/1.png
 ### 📝 Solvesql - 레스토랑의 대목[🔗](https://solvesql.com/problems/high-season-of-restaurant/)
 
 ## **✅ CTE (`WITH`) 학습 및 문제 풀이**[🔗](https://dev.mysql.com/doc/refman/8.0/en/with.html) 
+```sql
+SELECT
+  *
+FROM tips
+WHERE day IN (SELECT day FROM tips GROUP BY day HAVING SUM(total_bill) >= 1500)
+```
+![image](../SQL/image/Week0/2.png)
 
 ### 📖 15.2.20 WITH (Common Table Expressions)
 #### 공통 테이블 표현식(CTE) 개요
@@ -164,4 +176,22 @@ SELECT * FROM cte_name;
 
 ### 📝 programmers - 식품분류별 가장 비싼 식품의 정보 조회하기[🔗](https://school.programmers.co.kr/learn/courses/30/lessons/131116) 
 
-→ 서브쿼리와 with를 모두 활용하여 각각 풀이해보고 각 방식의 장단점을 정리해보세요.
+```sql
+-- 서브쿼리
+SELECT
+    CATEGORY,
+    PRICE AS MAX_PRICE,
+    PRODUCT_NAME
+FROM FOOD_PRODUCT
+WHERE (CATEGORY, PRICE) IN (
+    SELECT
+        CATEGORY,
+        MAX(PRICE)
+    FROM FOOD_PRODUCT
+    WHERE CATEGORY IN ('과자', '국', '김치', '식용유')
+    GROUP BY CATEGORY
+)
+ORDER BY PRICE DESC
+```
+
+![image](../SQL/image/Week0/3.png)
