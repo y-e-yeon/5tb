@@ -41,7 +41,7 @@ OVER ( [PARTITION BY column] [ORDER BY column] [frame_clause] )
 ### 📖 14.20.1. Window Function Descriptions[🔗](https://dev.mysql.com/doc/refman/8.0/en/window-function-descriptions.html)
 
 **윈도우 함수 목록**
-| 함수명         | 설명                                      | 설명 |
+| 함수명         | 설명                                      | 추가 설명 |
 |--------------|-----------------------------------------|---------|
 | CUME_DIST()  | 누적 분포 값 계산                        |현재 행보다 작거나 같은 값의 비율을 반환하는 누적 분포 함수, 공식: 현재 행보다 작거나 같은 행 수 ÷ 전체 행 수 , 반환 값: 0 ~ 1
 | DENSE_RANK() | 중간 순위 없이 현재 행의 순위 반환        |순위를 부여하지만, 동일한 값에는 같은 순위를 할당하고 중간 순위를 건너뛰지 않음, ORDER BY 없이 사용하면 모든 행이 동등한 순위를 가짐
