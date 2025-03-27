@@ -73,7 +73,6 @@ ORDER BY AUTHOR_ID ASC, CATEGORY DESC
 ## **✅ GROUP BY + HAVING 학습 및 문제 풀이**
 
 ### 📖 MySQL 공식 문서 - GROUP BY[🔗](https://dev.mysql.com/doc/refman/8.0/en/group-by-handling.html)
-### 📖 MySQL 공식 문서 - HAVING[🔗](https://dev.mysql.com/doc/refman/8.0/en/group-by-handling.html)
 
 **비결정적 SELECT에 대한 처리**
 - GROUP BY에 포함되지 않은 컬럼은 서버가 임의로 선택하게 되며, ORDER BY는 결과 정렬만 할 뿐, 그룹 내 어떤 값이 선택되는지에 영향 없음
@@ -130,6 +129,30 @@ FROM (
   GROUP BY id, FLOOR(value/100)
 ) AS dt;
 ```
+
+### 📖 MySQL 공식 문서 - HAVING[🔗](https://dev.mysql.com/doc/refman/8.0/en/select.html)
+
+**HAVING 절이란?**
+- GROUP BY 절로 생성된 그룹에 조건을 지정할 때 사용
+- WHERE는 개별 행(row) 에 조건
+- HAVING은 그룹(group) 에 조건
+
+**WHERE vs. HAVING**
+| 구분 | WHERE | HAVING |
+|---|------|-------|
+| 적용 시점	| 그룹화 이전 |	그룹화 이후 |
+| 대상 | 각 행 | 각 그룹 |
+| 집계 함수 사용 | 사용 불가 | 사용 가능 |
+
+**HAVING 절의 특징**
+- GROUP BY 절이 없을 경우, 전체가 하나의 그룹으로 간주됨
+- HAVING에서 집계 함수와 컬럼 별칭(alias) 을 사용할 수 있음
+
+**주의할 점**
+1. WHERE 절 대신 HAVING 사용 금지
+2. 모호한 컬럼명 사용 시 경고 발생
+3. GROUP BY와 HAVING 모두에서 사용되는 컬럼명이 있을 때 → GROUP BY의 컬럼으로 우선 인식됨
+4. 중복된 컬럼 이름은 피하는 것이 좋음음
 
 ### 📝 programmers - 언어별 개발자 분류하기[🔗](https://school.programmers.co.kr/learn/courses/30/lessons/276036)
 
