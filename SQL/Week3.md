@@ -107,5 +107,33 @@ SELECT NULLIF(1, 2);  -- 결과: 1
 - GREATEST()나 LEAST()는 NULL 포함 시 결과도 NULL
 
 ### 📝 HackerRank - 삼각형 종류 분류하기[🔗](https://www.hackerrank.com/challenges/what-type-of-triangle/problem) `CASE문`
+```sql
+/*
+Enter your query here.
+*/
+SELECT
+    CASE 
+        WHEN A + B > C AND B + C > A AND C + A > B THEN
+            CASE
+                WHEN A = B AND B = C THEN 'Equilateral'
+                WHEN A = B OR B = C OR C = A THEN 'Isosceles'
+                ELSE 'Scalene'
+            END
+        ELSE 'Not A Triangle'
+    END AS TRIANGLE_TYPE
+FROM TRIANGLES;
+```
+
+![image](../SQL/image/Week3/1.png)
 
 ### 📝 LeetCode - find-customer-referee[🔗](https://leetcode.com/problems/find-customer-referee/description/) `IS NULL`
+
+```sql
+# Write your MySQL query statement below
+SELECT
+    name
+FROM Customer
+WHERE referee_id IS NULL OR referee_id <> 2;
+```
+
+![image](../SQL/image/Week3/2.png)
