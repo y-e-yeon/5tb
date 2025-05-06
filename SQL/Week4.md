@@ -51,24 +51,56 @@ GROUP_CONCAT([DISTINCT] expr [, expr ...]
 | `CONCAT_WS()`     | 지정한 구분자(separator)를 사용하여 인자들을 연결, `WS`는 "With Separator"를 의미 |
 
 ### 📝 programmers - 우유와 요거트가 담긴 장바구니[🔗](https://school.programmers.co.kr/learn/courses/30/lessons/62284) `GROUP_CONCAT()`
+```sql
+-- 코드를 입력하세요
+WITH NAME_LIST AS (
+    SELECT
+        CART_ID,
+        GROUP_CONCAT(NAME) AS items
+    FROM CART_PRODUCTS
+    GROUP BY CART_ID
+)
 
-    ```jsx
-    조건:
-    - WITH 구문을 사용해 가상의 테이블을 먼저 만들고,
-    - GROUP_CONCAT() 을 활용하여 상품명을 하나의 문자열로 합친 후,
-    - 그 문자열을 활용해 Milk와 Yogurt가 모두 존재하는 장바구니만 필터링해야 합니다.
-    ```
+SELECT
+    CART_ID
+FROM NAME_LIST
+WHERE items LIKE '%MILK%'
+    AND items LIKE '%Yogurt%'
+ORDER BY CART_ID;
+```
+![image](../SQL/image/Week4/1.png)
     
-    → 성능 상 더 좋은 쿼리를 짜는 방법들이 있지만, 이번 문제는 **GROUP_CONCAT()**을 활용하여 데이터를 가공하는 연습을 목표로 합니다.
+### 📝 programmers - 언어별 개발자 분류하기[🔗](https://school.programmers.co.kr/learn/courses/30/lessons/276036)
     
-### 📝 programmers - 언어별 개발자 분류하기[🔗](https://school.programmers.co.kr/learn/courses/30/lessons/276036) **(OPTIONAL)**는 2주차에 `HAVING`을 공부할 때 풀어본 문제입니다.
-    
+    **(OPTIONAL)**는 2주차에 `HAVING`을 공부할 때 풀어본 문제입니다.
     해당 문제 상황을 참고하여, **각 개발자가 보유한 기술 목록과 기술 카테고리를 요약하여 출력하는 쿼리**를 작성해주세요.**`GROUP_CONCAT()`**
-    
-    출력 결과는 다음과 같아야 합니다.
-    
-    ![4-2.PNG](attachment:079e9ecb-3a6d-4dea-aea8-60981d09d411:4-2.png)
-    
+
+```sql
+-- 코드를 작성해주세요
+WITH SKILLS_DEVELOPER AS (
+    SELECT 
+        D.ID,
+        D.EMAIL,
+        S.NAME,
+        S.CATEGORY
+    FROM DEVELOPERS D
+    JOIN SKILLCODES S ON (D.SKILL_CODE & S.CODE) > 0
+), ALL_SKILLS AS (
+    SELECT 
+        ID,
+        EMAIL,
+        GROUP_CONCAT(NAME ORDER BY NAME) AS NAME,
+        GROUP_CONCAT(CATEGORY ORDER BY NAME) AS CATEGORY
+    FROM SKILLS_DEVELOPER
+    GROUP BY 
+        ID, EMAIL
+)
+SELECT * 
+FROM ALL_SKILLS
+ORDER BY ID;
+```
+
+![image](../SQL/image/Week4/2.png)
 
 ## **✅ CTE(`WITH RECURSIVE`) 학습 및 문제 풀이**
 
@@ -119,4 +151,24 @@ SELECT * FROM cte_name;
 
 
 ### 📝 programmers - 입양 시각 구하기(2)[🔗](https://school.programmers.co.kr/learn/courses/30/lessons/59413) `WITH RECURSIVE`
-
+```sql
+-- 코드를 입력하세요
+WITH RECURSIVE hours AS (
+    SELECT 0 AS hour
+    UNION ALL
+    SELECT hour + 1 FROM hours WHERE hour < 23
+), hour_data AS (
+    SELECT 
+        HOUR(DATETIME) AS hour,
+        COUNT(*) AS cnt
+    FROM ANIMAL_OUTS
+    GROUP BY HOUR(DATETIME)
+)
+SELECT 
+    h.hour,
+    IFNULL(d.cnt, 0) AS count
+FROM hours h
+LEFT JOIN hour_data d ON h.hour = d.hour
+ORDER BY h.hour
+```
+![image](../SQL/image/Week4/3.png)
