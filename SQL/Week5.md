@@ -87,6 +87,22 @@ SELECT REGEXP_REPLACE('a b c', 'b', 'X');  -- 'a X c'
 
 ### 📝 programmers - 서울에 위치한 식당 목록 출력하기[🔗](https://school.programmers.co.kr/learn/courses/30/lessons/131118)
 ```sql
+SELECT
+    RI.REST_ID,
+    RI.REST_NAME,
+    RI.FOOD_TYPE,
+    RI.FAVORITES,
+    RI.ADDRESS,
+    ROUND(AVG(RR.REVIEW_SCORE), 2) AS SCORE
+FROM REST_INFO RI
+JOIN REST_REVIEW RR ON RI.REST_ID = RR.REST_ID
+WHERE
+    REGEXP_LIKE(RI.ADDRESS, '^서울|^서울특별시')
+GROUP BY
+    RI.REST_ID, RI.REST_NAME, RI.FOOD_TYPE, RI.FAVORITES, RI.ADDRESS
+ORDER BY
+    SCORE DESC,
+    RI.FAVORITES DESC;
 ```
 ![image](../SQL/image/Week5/.png)
 
@@ -144,3 +160,15 @@ SELECT REGEXP_REPLACE('a b c', 'b', 'X');  -- 'a X c'
     | 집계 함수에서 NULL만 있을 경우 | 중립값 반환 (예: `FF..FF`, `00..00`) |
 
 ### 📝 programmers - 부모의 형질을 모두 가지는 대장균 찾기[🔗](https://school.programmers.co.kr/learn/courses/30/lessons/301647)
+```sql
+SELECT
+    C.ID,
+    C.GENOTYPE,
+    P.GENOTYPE AS PARENT_GENOTYPE
+FROM ECOLI_DATA C
+JOIN ECOLI_DATA P
+ON C.PARENT_ID = P.ID
+WHERE
+    BITAND(C.GENOTYPE, P.GENOTYPE) = P.GENOTYPE
+ORDER BY C.ID
+```
