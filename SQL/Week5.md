@@ -87,24 +87,25 @@ SELECT REGEXP_REPLACE('a b c', 'b', 'X');  -- 'a X c'
 
 ### 📝 programmers - 서울에 위치한 식당 목록 출력하기[🔗](https://school.programmers.co.kr/learn/courses/30/lessons/131118)
 ```sql
+-- 코드를 입력하세요
 SELECT
-    RI.REST_ID,
-    RI.REST_NAME,
-    RI.FOOD_TYPE,
-    RI.FAVORITES,
-    RI.ADDRESS,
-    ROUND(AVG(RR.REVIEW_SCORE), 2) AS SCORE
-FROM REST_INFO RI
-JOIN REST_REVIEW RR ON RI.REST_ID = RR.REST_ID
-WHERE
-    REGEXP_LIKE(RI.ADDRESS, '^서울|^서울특별시')
-GROUP BY
-    RI.REST_ID, RI.REST_NAME, RI.FOOD_TYPE, RI.FAVORITES, RI.ADDRESS
-ORDER BY
-    SCORE DESC,
-    RI.FAVORITES DESC;
+    I.REST_ID,
+    I.REST_NAME,
+    I.FOOD_TYPE,
+    I.FAVORITES,
+    I.ADDRESS,
+    ROUND(AVG(R.REVIEW_SCORE), 2) AS SCORE
+FROM REST_INFO I
+JOIN REST_REVIEW R
+ON I.REST_ID = R.REST_ID
+WHERE REGEXP_LIKE(I.ADDRESS, '^서울특별시|^서울')
+-- REGEXP_LIKE(컬럼, 정규표현식) : 해당 컬럼이 정규표현식과 일치하는 경우 true를 반환
+-- ^단어 : 문자열이 해당 단어로 시작하는 경우에 일치
+-- | : OR 연산자
+GROUP BY I.REST_ID, I.REST_NAME, I.FOOD_TYPE, I.FAVORITES, I.ADDRESS
+ORDER BY SCORE DESC, I.FAVORITES DESC
 ```
-![image](../SQL/image/Week5/.png)
+![image](../SQL/image/Week5/1.png)
 
 ## **✅ 비트연산자 학습 및 문제 풀이**
 
@@ -161,6 +162,7 @@ ORDER BY
 
 ### 📝 programmers - 부모의 형질을 모두 가지는 대장균 찾기[🔗](https://school.programmers.co.kr/learn/courses/30/lessons/301647)
 ```sql
+-- 코드를 작성해주세요
 SELECT
     C.ID,
     C.GENOTYPE,
@@ -168,7 +170,8 @@ SELECT
 FROM ECOLI_DATA C
 JOIN ECOLI_DATA P
 ON C.PARENT_ID = P.ID
-WHERE
-    BITAND(C.GENOTYPE, P.GENOTYPE) = P.GENOTYPE
+WHERE C.GENOTYPE & P.GENOTYPE = P.GENOTYPE
+-- BITAND(A, B) : A와 B의 비트 AND 연산 수행
 ORDER BY C.ID
 ```
+![image](../SQL/image/Week5/2.png)
